@@ -1,8 +1,11 @@
+from numpy import dot
+from numpy.linalg import norm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from collections import Counter
 
 analyser = SentimentIntensityAnalyzer()
+SCORE = 0.01
 
 def score_sentence(sentence):
     score = analyser.polarity_scores(sentence)
@@ -15,20 +18,54 @@ def score_passage(passage):
 	passage_length = len(''.join(s for s in sentence_array))
 	total_score = Counter()
 	pos = neg = 0
+	HL = len(sentence_array) // 2
 
-	for sentence in sentence_array:
+	for i, sentence in enumerate(sentence_array):
 		sentence_score = score_sentence(sentence)
 		compound_score = sentence_score.get('compound', 0)
-		
+		multiplier = (SCORE // 2) * ((i - HL) ** 2) + SCORE
 		if compound_score > 0:
-			pos += compound_score
+			# print('pos', sentence, multiplier)
+			total_score += sentence_score
+			pos += compound_score * multiplier
 		elif compound_score < 0:
-			neg -= compound_score
+			# print('neg', sentence, multiplier)
+			total_score += sentence_score
+			neg -= compound_score * multiplier
 
-	return 'pos' if pos > neg else 'neg'
+	print(total_score)
+	print (('pos', pos) if pos > neg else ('neg', -neg))
+	return total_score
+	# return ('pos', pos) if pos > neg else ('neg', -neg)
 
+def convert_to_vector(score):
+	# order = ['neu', 'neg', 'pos', 'compound']
+	compound_score = score['compound']
+	compound_converted = None
 
-fin = open('passage.in', 'r')
-article = fin.read()
+	if abs(compound_score) < 0.75:
+		compound_converted = 0
+	elif compound_score > 0.75:
+		compound_converted = 1
+	elif compound_score < -0.75:
+		compound_converted = -1
 
-print(score_passage(article))
+	neg_pos = max(score['neg'], score['pos']) * (-1 if score['neg'] > score['pos'] else 1)
+
+	return [compound_converted] + [neg_pos]
+
+fin1 = open('passage1.in', 'r')
+fin2 = open('passage2.in', 'r')
+
+article1 = fin1.read()
+article2 = fin2.read()
+
+a_score = convert_to_vector(score_passage(article1))
+b_score = convert_to_vector(score_passage(article2))
+
+# print(a_score)
+# print(b_score)
+
+cos_sim = dot(a_score, b_score)/ (norm(a_score) * norm(b_score))
+print(cos_sim)
+# print(levenshtein(a_score, b_score))
