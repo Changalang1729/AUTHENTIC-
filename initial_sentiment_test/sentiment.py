@@ -33,8 +33,8 @@ def score_passage(passage):
 			total_score += sentence_score
 			neg -= compound_score * multiplier
 
-	print(total_score)
-	print (('pos', pos) if pos > neg else ('neg', -neg))
+	# print(total_score)
+	# print (('pos', pos) if pos > neg else ('neg', -neg))
 	return total_score
 	# return ('pos', pos) if pos > neg else ('neg', -neg)
 
@@ -54,18 +54,19 @@ def convert_to_vector(score):
 
 	return [compound_converted] + [neg_pos]
 
-fin1 = open('passage1.in', 'r')
-fin2 = open('passage2.in', 'r')
+def get_similarity(passage1, passage2):
+	a_score = convert_to_vector(score_passage(article1))
+	b_score = convert_to_vector(score_passage(article2))
 
-article1 = fin1.read()
-article2 = fin2.read()
+	cos_sim = dot(a_score, b_score)/ (norm(a_score) * norm(b_score))
 
-a_score = convert_to_vector(score_passage(article1))
-b_score = convert_to_vector(score_passage(article2))
+	return cos_sim
 
-# print(a_score)
-# print(b_score)
+if __name__ ==  '__main__':
+	fin1 = open('passage1.in', 'r')
+	fin2 = open('passage2.in', 'r')
 
-cos_sim = dot(a_score, b_score)/ (norm(a_score) * norm(b_score))
-print(cos_sim)
-# print(levenshtein(a_score, b_score))
+	article1 = fin1.read()
+	article2 = fin2.read()
+
+	print(get_similarity(article1, article2))
