@@ -3,6 +3,7 @@ from numpy.linalg import norm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from collections import Counter
+import sys
 
 analyser = SentimentIntensityAnalyzer()
 SCORE = 0.01
@@ -63,8 +64,14 @@ def get_similarity(passage1, passage2):
 	return cos_sim
 
 if __name__ ==  '__main__':
-	fin1 = open('passage1.in', 'r')
-	fin2 = open('passage2.in', 'r')
+	args = sys.argv
+
+	if len(args) != 3:
+		print('Error: Need 2 file arguments to get similarity.')
+		exit(0)
+
+	fin1 = open(args[1], 'r')
+	fin2 = open(args[2], 'r')
 
 	article1 = fin1.read()
 	article2 = fin2.read()
