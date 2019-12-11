@@ -2,33 +2,46 @@ import os
 import re
 import string
 import math
- 
-DATA_DIR = 'enron'
+import random
+from newsplease import NewsPlease
+
+DATA_DIR = './'
 target_names = ['right', 'left']
  
 def get_data(DATA_DIR):
-	subfolders = ['enron%d' % i for i in range(1, 2)]
-
 	data = []
 	target = []
-	for subfolder in subfolders:
-		# left
-		left_files = os.listdir(os.path.join(DATA_DIR, subfolder, 'left'))
-		for left_file in left_files:
-			with open(os.path.join(DATA_DIR, subfolder, 'left', left_file), encoding="latin-1") as f:
-				data.append(f.read())
-		
-			target.append(1)
+	# left
+	left_files = os.listdir(os.path.join(DATA_DIR, 'left'))
+	for left_file in left_files:
+		if left_file == '.DS_Store':
+			continue
+		with open(os.path.join(DATA_DIR, 'left', left_file), encoding="latin-1") as f:
+			data.append(f.read())
+	
+		target.append(1)
 
-		# right
-		right_files = os.listdir(os.path.join(DATA_DIR, subfolder, 'right'))
-		for right_file in right_files:
-			with open(os.path.join(DATA_DIR, subfolder, 'right', right_file), encoding="latin-1") as f:
-				data.append(f.read())
-		
-			target.append(0)
+	# right
+	right_files = os.listdir(os.path.join(DATA_DIR, 'right'))
+	for right_file in right_files:
+		if right_file == '.DS_Store':
+			continue
+		with open(os.path.join(DATA_DIR, 'right', right_file), encoding="latin-1") as f:
+			data.append(f.read())
+	
+		target.append(0)
 
 	return data, target
+
+def shuffle_data(data, target):
+	dict_data = {}
+	for i in range(len(data)):
+		dict_data[data[i]] = target[i]
+
+	to_be_shuffled = list(dict_data.items())
+	random.shuffle(to_be_shuffled)
+	shuffled_dict = dict(to_be_shuffled)
+	return map(list, (shuffled_dict.keys(), shuffled_dict.values()))
 
 class leftDetector(object):
 	"""Implementation of Naive Bayes for binary classification"""
@@ -71,6 +84,8 @@ class leftDetector(object):
 	 
 				self.word_counts[c][word] += count
 
+		# print(self.vocab)
+
 	def predict(self, X):
 		result = []
 		for x in X:
@@ -89,22 +104,31 @@ class leftDetector(object):
 	 
 			left_score += self.log_class_priors['left']
 			right_score += self.log_class_priors['right']
-			print(left_score, right_score)
+
 			if left_score > right_score:
-				result.append(1)
+				accuracy = abs((abs(left_score) - abs(right_score)) / (left_score)) * 100
+				result.append((1, accuracy))
 			else:
-				result.append(0)
+				# print('Accuracy:', right_score / (left_score + right_score))
+				accuracy = abs((abs(left_score) - abs(right_score)) / (right_score)) * 100
+				result.append((0, accuracy))
 		return result
 
-if __name__ == '__main__':
+def get_prediction(article_text):
 	X, y = get_data(DATA_DIR)
-	print(len(X), len(y))
+	X, y = shuffle_data(X, y)
+	# test_articles = get_test_data(TEST_DIR)
 	MNB = leftDetector()
 
-	MNB.fit(X[500:], y[500:])
+	MNB.fit(X[2000:], y[2000:])
+ 	
+	pred, accuracy = MNB.predict([article_text])[0]
+	# print(article.title)
+	print('Liberal' if pred else 'Conservative')
+	print('Confidence: ', accuracy) # take this line out if you don't want the confidence score
+	# true = test_labels
  
-	pred = MNB.predict(X[:500])
-	true = y[:500]
- 
-	accuracy = sum(1 for i in range(len(pred)) if pred[i] == true[i]) / float(len(pred))
-	print("{0:.4f}".format(accuracy))
+	# accuracy = sum(1 for i in range(len(pred)) if pred[i] == true[i]) / float(len(pred))
+	# print("{0:.4f}".format(accuracy))
+
+get_prediction("Donald Trump is mainstream media impeachment trial")
