@@ -8,3 +8,5 @@ used to preprocess it for the neural net.
 
 The preprocessor is the initial one I used, and the pretty_preprocessor is the fixed version the Eric made to work better with
 his neural net (and give more information to us).
+
+If you have any further questions email me at ashton.winters@yale.edu or Eric.
