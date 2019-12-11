@@ -1,1 +1,11 @@
+The CSV files are too big to upload to this GitHub respository. I have included a link to the csv files used to train the 
+neural network.
 
+Each csv file contains text of all the articles used (~12000 articles per bias) in one giant text file. If you want to 
+create the individual files yourself (it crashed my browser when I tried to upload them to Google Drive), you can do so using
+the data set and the parser I made. Some sites were also taken from the web using the web scraper.
+
+The link to the csv files are down here:
+https://drive.google.com/open?id=1_zb6IHHFUfYiLu5yZ9JybMvn_Ez-W7-D
+
+These files were processed using all of the processing tools from the neural network.
