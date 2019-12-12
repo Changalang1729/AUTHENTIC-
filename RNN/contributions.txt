@@ -1,0 +1,24 @@
+Eric:
+    1) wrote the RNN (lstm), wrote the webscraper to generate the dataset, 
+    wrote the preprocessing to process the dataset before putting it into the RNN,
+    tested different RNN activation functions, wrote the glove similarity index with 
+    cosine similarity, attempted to address deficiencies as noted: 
+    1) Although all activation functions were tried, we have no statistical evidence that one works better 
+    than another. We merely used the one that seemed best on a smaller dataset.
+    2) It's difficult to assess which specific dataset has the most contribution for the next dataset
+    3) It's impossible to measure how language has changed over time with our analysis methods at the moment
+    4) Glove Similarity may not be the best method to measure similar sentiments.
+Ashton/Evan:
+    1) Peer programmed (to my knowledge) completely the front end and the use of the SQL database
+    to include features such as the circular representations, the clickable tables, the ability to input links
+    instead of texts, the use of a search bar, the ability to cache the corpus.
+Brian:
+    1) created the first sentiment checkers through NaiveBayes in order to assess similarities 
+    between corpus and text
+    2) utilized myriad libraries including the Naivebayes in order to train sentiment closeness
+    3) was able to also assess positivity and negativity of text
+    4) first wrote the functions to assess similarity through various
+    https://medium.com/@adriensieg/text-similarities-da019229c894
+    5) wrote the kmeans similarity index, the jaccard similarity, and other ones.
+    6) assisted on the front end with Evan and Ashton
+
