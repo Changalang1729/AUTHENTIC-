@@ -71,8 +71,6 @@ def evaluateArticle(url):
 
     conservative = cosine_distance_wordembedding_method(model, text, right_corpus)
     liberal = cosine_distance_wordembedding_method(model, text, left_corpus)
-    conservative = conservative
-    liberal = liberal
 
     # store it in the database
     cur.execute("INSERT INTO ArticleInfo (Company, Title, Authors, Link, Text, Conservative, Liberal) \
