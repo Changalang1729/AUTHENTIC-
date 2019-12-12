@@ -7,6 +7,6 @@ After this, open a new terminal and move into the vue-app directory and run npm 
 The Flask server runs on localhost:5000 and the vue-app runs on localhost:8080 on my computer. If your Flask server is runing on a different port, just change the fetch requests on the Vue app to whatever port it is on.
 
 NOTE:
-This contains all of the files except for the node modules. There were almost 30,000 files and I was unable to upload it to GitHub. If you do not have the modules already installed, I have included it in this Google Drive folder: (folder will go here once its done uploading) 
+This contains all of the files except for the node modules. There were almost 30,000 files and I was unable to upload it to GitHub. If you do not have the modules already installed, contact me if you need them. It's a beefy file.
 
 If you have further questions email me at ashton.winters@yale.edu.
