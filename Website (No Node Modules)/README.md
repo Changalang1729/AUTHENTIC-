@@ -1,3 +1,5 @@
+You will need to download the Glove Model I cached and put it in the same folder as server.py. Instructions for downloading it are in the .md file. (There is a Google Drive link).
+
 To run the website, first run python3 server.py. This will activate the restful API that works with the SQLite database and gives infromation to the Vue app.
 
 After this, open a new terminal and move into the vue-app directory and run npm run serve. This will run the Vue app.
